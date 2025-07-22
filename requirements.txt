@@ -1,0 +1,5 @@
+colorama==0.4.6
+pyfiglet==1.0.3
+termcolor==2.3.0
+terminal_spinner==0.0.1
+yaspin==3.1.0
