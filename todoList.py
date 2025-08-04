@@ -37,11 +37,11 @@ def clear():
 
 def add_task():
     name = input(Fore.CYAN + 'Enter task name: ')
-    due_date_str = input(Fore.CYAN + 'Enter due date (YYYY-MM-DD): ')
+    due_date_str = input(Fore.CYAN + 'Enter due date (DD-MM-YYYY): ')
     try:
-        due_date = datetime.datetime.strptime(due_date_str, '%Y-%m-%d').date()
+        due_date = datetime.datetime.strptime(due_date_str, '%d-%m-%Y').date()
     except ValueError:
-        print(Fore.RED + 'Invalid date format! Please use YYYY-MM-DD.')
+        print(Fore.RED + 'Invalid date format! Please use DD-MM-YYYY.')
         return
     
     new_task = Task(name, due_date)
@@ -91,7 +91,6 @@ def save_tasks():
         for task in tasks:
             with yaspin(text="", color="green") as spinner:
                 time.sleep(1.5)  # simulate loading
-            # Format: name|due_date|completed
             line = f"{task.name}|{task.due_date}|{task.completed}\n"
             file.write(line)
     print(Fore.GREEN + 'Tasks saved.')
@@ -105,7 +104,7 @@ def load_tasks():
                 time.sleep(1.5)  # simulate loading
             for line in file:
                 name, due_date_str, completed_str = line.strip().split('|')
-                due_date = datetime.datetime.strptime(due_date_str, '%Y-%m-%d').date()
+                due_date = datetime.datetime.strptime(due_date_str, '%d-%m-%Y').date()
                 completed = completed_str == 'True'
                 task = Task(name, due_date)
                 task.completed = completed
