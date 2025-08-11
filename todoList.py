@@ -1,5 +1,5 @@
 import datetime
-from colorama import Fore, Back, Style
+from colorama import Fore
 from pyfiglet import figlet_format
 from yaspin import yaspin
 import time
@@ -37,11 +37,11 @@ def clear():
 
 def add_task():
     name = input(Fore.CYAN + 'Enter task name: ')
-    due_date_str = input(Fore.CYAN + 'Enter due date (DD-MM-YYYY): ')
+    due_date_str = input(Fore.CYAN + 'Enter due date (YYYY-MM-DD): ')
     try:
-        due_date = datetime.datetime.strptime(due_date_str, '%d-%m-%Y').date()
+        due_date = datetime.datetime.strptime(due_date_str, '%y-%m-%d').date()
     except ValueError:
-        print(Fore.RED + 'Invalid date format! Please use DD-MM-YYYY.')
+        print(Fore.RED + 'Invalid date format! Please use YYYY-MM-DD.')
         return
     
     new_task = Task(name, due_date)
@@ -78,7 +78,7 @@ def delete_task():
         index = int(input(Fore.CYAN+'Enter the task number to delete: '))
         if 1 <= index <= len(tasks):
             removed = tasks.pop(index - 1)
-            with yaspin(text="", color="red") as spinner:
+            with yaspin(text="", color="red"):
                 time.sleep(1.5)  # simulate loading
                 print(Fore.RED+ f'Task "{removed.name}" deleted.')
         else:
@@ -103,8 +103,8 @@ def load_tasks():
             with yaspin(text="", color="cyan") as spinner:
                 time.sleep(1.5)  # simulate loading
             for line in file:
-                name, due_date_str, completed_str = line.strip().split('|')
-                due_date = datetime.datetime.strptime(due_date_str, '%d-%m-%Y').date()
+                name, due_date_str, completed_str = line.split('|')
+                due_date = datetime.datetime.strptime(due_date_str, '%y-%m-%d').date()
                 completed = completed_str == 'True'
                 task = Task(name, due_date)
                 task.completed = completed
